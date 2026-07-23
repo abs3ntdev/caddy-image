@@ -38,32 +38,19 @@ jobs:
           BASE_DIGEST=$(docker buildx imagetools inspect ghcr.io/hotio/caddy:latest --format '{{json .Manifest}}' | jq -r '.digest')
           echo "base_digest=$BASE_DIGEST" >> "$GITHUB_OUTPUT"
 
-          PANGOLIN_VERSION=$(curl -fsSL https://proxy.golang.org/github.com/abs3ntdev/caddy-pangolin/@latest | jq -r '.Version')
-          echo "pangolin_version=$PANGOLIN_VERSION" >> "$GITHUB_OUTPUT"
+          CADDY_VERSION=$(awk '$1 == "github.com/caddyserver/caddy/v2" {print $2}' go.mod)
+          echo "caddy_version=$CADDY_VERSION" >> "$GITHUB_OUTPUT"
 
           CURRENT_BASE=$(docker buildx imagetools inspect "$IMAGE:latest" \
             --format '{{ index (index .Image "config") "Labels" "io.abs3ntdev.base-digest" }}' 2>/dev/null || echo "none")
-          CURRENT_PANGOLIN=$(docker buildx imagetools inspect "$IMAGE:latest" \
-            --format '{{ index (index .Image "config") "Labels" "io.abs3ntdev.pangolin-version" }}' 2>/dev/null || echo "none")
-          echo "current base:     $CURRENT_BASE"
-          echo "hotio base:       $BASE_DIGEST"
-          echo "current pangolin: $CURRENT_PANGOLIN"
-          echo "latest pangolin:  $PANGOLIN_VERSION"
+          echo "current base: $CURRENT_BASE"
+          echo "hotio base:   $BASE_DIGEST"
 
-          if [ "${{ github.event_name }}" != "schedule" ] || [ "$CURRENT_BASE" != "$BASE_DIGEST" ] || [ "$CURRENT_PANGOLIN" != "$PANGOLIN_VERSION" ]; then
+          if [ "${{ github.event_name }}" != "schedule" ] || [ "$CURRENT_BASE" != "$BASE_DIGEST" ]; then
             echo "rebuild=true" >> "$GITHUB_OUTPUT"
           else
             echo "rebuild=false" >> "$GITHUB_OUTPUT"
           fi
-
-      - name: Get hotio caddy version
-        id: caddy
-        if: steps.check.outputs.rebuild == 'true'
-        run: |
-          docker pull -q ghcr.io/hotio/caddy:latest
-          VERSION=$(docker run --rm --entrypoint /app/caddy ghcr.io/hotio/caddy:latest version | awk '{print $1}')
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "caddy version: $VERSION"
 
       - name: Set up QEMU
         if: steps.check.outputs.rebuild == 'true'
@@ -82,11 +69,9 @@ jobs:
           pull: true
           platforms: linux/amd64,linux/arm64
           build-args: |
-            CADDY_VERSION=${{ steps.caddy.outputs.version }}
-            PANGOLIN_VERSION=${{ steps.check.outputs.pangolin_version }}
             BASE_DIGEST=${{ steps.check.outputs.base_digest }}
           tags: |
             ${{ env.IMAGE }}:latest
-            ${{ env.IMAGE }}:${{ steps.caddy.outputs.version }}
+            ${{ env.IMAGE }}:${{ steps.check.outputs.caddy_version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

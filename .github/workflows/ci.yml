@@ -1,0 +1,22 @@
+name: ci
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v7
+        with:
+          go-version: stable
+      - name: build
+        run: go build ./...
+      - name: verify plugins load
+        run: |
+          go build -o /tmp/caddy .
+          /tmp/caddy list-modules | grep -E "pangolin|cloudflare|rate_limit"
