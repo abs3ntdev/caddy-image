@@ -19,4 +19,7 @@ jobs:
       - name: verify plugins load
         run: |
           go build -o /tmp/caddy .
-          /tmp/caddy list-modules | grep -E "pangolin|cloudflare|rate_limit"
+          MODULES=$(/tmp/caddy list-modules)
+          for m in pangolin cloudflare rate_limit http.handlers.cache fs.vfs fs.merge; do
+            echo "$MODULES" | grep -q "$m" || { echo "missing module: $m"; exit 1; }
+          done
