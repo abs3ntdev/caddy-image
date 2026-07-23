@@ -1,13 +1,14 @@
 # caddy-image
 
 Custom Caddy Docker image based on [hotio/caddy](https://hotio.dev/containers/caddy/).
-Caddy is built as a plain Go program ([swim](https://github.com/gfx-labs/swim)-style):
-`main.go` blank-imports the plugins, versions are pinned in `go.mod`.
+Caddy is built as a plain Go program: `main.go` blank-imports the plugins,
+versions are pinned in `go.mod`.
 
 Included plugins:
 
 - [caddy-pangolin](https://github.com/abs3ntdev/caddy-pangolin)
 - [caddy-dns/cloudflare](https://github.com/caddy-dns/cloudflare)
+- [gfx-labs/swim](https://github.com/gfx-labs/swim) (vfs, mergefs, localfs, prerender, github_preview)
 - [mholt/caddy-ratelimit](https://github.com/mholt/caddy-ratelimit)
 
 ## Usage
