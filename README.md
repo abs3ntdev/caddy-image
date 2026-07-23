@@ -8,7 +8,6 @@ Included plugins:
 
 - [caddy-pangolin](https://github.com/abs3ntdev/caddy-pangolin)
 - [caddy-dns/cloudflare](https://github.com/caddy-dns/cloudflare)
-- [darkweak/souin](https://github.com/darkweak/souin) (HTTP cache)
 - [gfx-labs/swim](https://github.com/gfx-labs/swim) (vfs, mergefs, localfs, prerender, github_preview)
 - [mholt/caddy-ratelimit](https://github.com/mholt/caddy-ratelimit)
 

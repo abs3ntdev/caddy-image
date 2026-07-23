@@ -20,6 +20,6 @@ jobs:
         run: |
           go build -o /tmp/caddy .
           MODULES=$(/tmp/caddy list-modules)
-          for m in pangolin cloudflare rate_limit http.handlers.cache fs.vfs fs.merge; do
+          for m in pangolin cloudflare rate_limit fs.vfs fs.merge; do
             echo "$MODULES" | grep -q "$m" || { echo "missing module: $m"; exit 1; }
           done
