@@ -3,7 +3,7 @@ module github.com/abs3ntdev/caddy-image
 go 1.26.5
 
 require (
-	github.com/abs3ntdev/caddy-pangolin v0.2.0
+	github.com/abs3ntdev/caddy-pangolin v0.3.0
 	github.com/caddy-dns/cloudflare v0.2.4
 	github.com/caddyserver/caddy/v2 v2.11.4
 	github.com/gfx-labs/swim v1.3.0
@@ -196,7 +196,7 @@ require (
 	golang.org/x/sync v0.22.0 // indirect
 	golang.org/x/sys v0.46.0 // indirect
 	golang.org/x/term v0.44.0 // indirect
-	golang.org/x/text v0.38.0 // indirect
+	golang.org/x/text v0.39.0 // indirect
 	golang.org/x/time v0.15.0 // indirect
 	golang.org/x/tools v0.47.0 // indirect
 	google.golang.org/api v0.287.1 // indirect
