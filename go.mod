@@ -6,7 +6,7 @@ require (
 	github.com/abs3ntdev/caddy-pangolin v0.3.0
 	github.com/caddy-dns/cloudflare v0.2.4
 	github.com/caddyserver/caddy/v2 v2.11.7
-	github.com/gfx-labs/swim v1.3.1
+	github.com/gfx-labs/swim v1.3.2
 	github.com/mholt/caddy-ratelimit v0.1.0
 )
 
